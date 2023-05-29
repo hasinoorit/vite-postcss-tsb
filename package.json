@@ -12,6 +12,11 @@
     "postcss"
   ],
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hasinoorit/vite-postcss-tsb.git"
+  },
+  "homepage": "https://github.com/hasinoorit/vite-postcss-tsb",
   "author": "Hasinoor Rahman",
   "license": "MIT",
   "devDependencies": {
