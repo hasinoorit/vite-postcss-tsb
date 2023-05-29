@@ -17,7 +17,6 @@ export default defineConfig({
     vitePostCSSTreeShakeBuild({
       src: "src/assets/theme",
       outDir: "dist/theme",
-      plugins: [],
     }),
   ],
 });
@@ -25,8 +24,9 @@ export default defineConfig({
 
 ## Options
 
-| Option  | Required | Description              |
-| ------- | -------- | ------------------------ |
-| src     | Yes      | Entry directory of css   |
-| outDir  | Yes      | Output root Directory    |
-| plugins | No       | Array of PostCSS plugins |
+| Option     | Required | Description                         |
+| ---------- | -------- | ----------------------------------- |
+| src        | Yes      | Entry directory of css              |
+| outDir     | Yes      | Output root Directory               |
+| plugins    | No       | Array of PostCSS plugins            |
+| extensions | No       | Array of file extensions to process |

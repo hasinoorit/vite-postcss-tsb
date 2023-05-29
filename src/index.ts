@@ -5,14 +5,12 @@ import * as fs from "fs/promises";
 import * as path from "path";
 import postcss from "postcss";
 import postcssPresetEnv from "postcss-preset-env";
-// import { createRequire } from "node:module";
-
-// const require = createRequire(import.meta.url);
 
 export async function buildCSSLibrary(
   inputDirectory: string,
   outputDirectory: string,
-  plugins?: AcceptedPlugin[]
+  plugins?: AcceptedPlugin[],
+  extensions?: string[]
 ): Promise<void> {
   const files = await readDirectory(inputDirectory);
   const outputPath = path.resolve(outputDirectory);
@@ -25,14 +23,27 @@ export async function buildCSSLibrary(
       const fileStats = await getFileStats(inputFilePath);
       if (fileStats.isDirectory()) {
         await createDirectory(outputFilePath);
-        await buildCSSLibrary(inputFilePath, outputFilePath, plugins);
-      } else if (fileStats.isFile() && path.extname(file) === ".css") {
+        await buildCSSLibrary(
+          inputFilePath,
+          outputFilePath,
+          plugins,
+          extensions
+        );
+      } else if (fileStats.isFile() && shouldProcessFile(file, extensions)) {
         const inputCSS = await readFile(inputFilePath);
         const outputCSS = await processCSS(inputCSS, plugins);
         await writeFile(outputFilePath, outputCSS);
       }
     })
   );
+}
+
+function shouldProcessFile(file: string, extensions?: string[]): boolean {
+  if (!extensions || extensions.length === 0) {
+    return path.extname(file) === ".css";
+  }
+  const fileExtension = path.extname(file);
+  return extensions.includes(fileExtension.substr(1)); // Remove the leading dot (.)
 }
 
 async function readDirectory(directoryPath: string): Promise<string[]> {
@@ -82,7 +93,6 @@ async function processCSS(
   css: string,
   plugins?: AcceptedPlugin[]
 ): Promise<string> {
-  // const postcss = require("postcss");
   const postcssPlugins = plugins || [postcssPresetEnv];
   const result = await postcss(postcssPlugins).process(css, {
     from: undefined,
@@ -94,14 +104,17 @@ interface VitePCTSB {
   src: string;
   outDir: string;
   plugins?: AcceptedPlugin[];
+  extensions?: string[];
 }
 
 export const vitePostCSSTreeShakeBuild = (options: VitePCTSB): Plugin => {
+  const { src, outDir, plugins, extensions } = options;
+
   return {
     name: "vitePostCSSTreeShakeBuild",
 
     buildEnd() {
-      buildCSSLibrary(options.src, options.outDir, options.plugins);
+      buildCSSLibrary(src, outDir, plugins, extensions || ["css"]);
     },
   };
 };
