@@ -1,6 +1,6 @@
 {
   "name": "vite-postcss-tsb",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This plugin enable vite to build css using postcss without bundling into single file",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -14,7 +14,8 @@
   },
   "type": "module",
   "scripts": {
-    "build": "npx unbuild"
+    "build": "npx unbuild",
+    "publish": "npx unbuild && cd dist && npm publish"
   },
   "keywords": [
     "vite",
