@@ -1,0 +1,26 @@
+{
+  "name": "vite-postcss-tsb",
+  "version": "1.0.0",
+  "description": "This plugin enable vite to build css using postcss without bundling into single file",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "keywords": [
+    "vite",
+    "css",
+    "postcss"
+  ],
+  "type": "module",
+  "author": "Hasinoor Rahman",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.0.4"
+  },
+  "peerDependencies": {
+    "postcss": "^8",
+    "postcss-preset-env": "^8",
+    "vite": "^4"
+  }
+}
