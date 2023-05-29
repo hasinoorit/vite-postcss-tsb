@@ -9,8 +9,9 @@ npm i -D vite-postcss-tsb
 ## Usages
 
 ```js
+// vite.config.js
 import { defineConfig } from "vite";
-import { vitePostCSSTreeShakeBuild } from "./css.config";
+import { vitePostCSSTreeShakeBuild } from "vite-postcss-tsb";
 export default defineConfig({
   plugins: [
     vitePostCSSTreeShakeBuild({
