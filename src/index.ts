@@ -1,15 +1,18 @@
 import type { Plugin } from "vite";
 import type { Stats } from "fs";
 import type { AcceptedPlugin } from "postcss";
-import fs from "fs/promises";
-import path from "path";
+import * as fs from "fs/promises";
+import * as path from "path";
 import postcss from "postcss";
 import postcssPresetEnv from "postcss-preset-env";
+// import { createRequire } from "node:module";
+
+// const require = createRequire(import.meta.url);
 
 export async function buildCSSLibrary(
   inputDirectory: string,
   outputDirectory: string,
-  plugins?: postcss.AcceptedPlugin[]
+  plugins?: AcceptedPlugin[]
 ): Promise<void> {
   const files = await readDirectory(inputDirectory);
   const outputPath = path.resolve(outputDirectory);
@@ -77,8 +80,9 @@ async function writeFile(filePath: string, content: string): Promise<void> {
 
 async function processCSS(
   css: string,
-  plugins?: postcss.AcceptedPlugin[]
+  plugins?: AcceptedPlugin[]
 ): Promise<string> {
+  // const postcss = require("postcss");
   const postcssPlugins = plugins || [postcssPresetEnv];
   const result = await postcss(postcssPlugins).process(css, {
     from: undefined,
@@ -95,6 +99,7 @@ interface VitePCTSB {
 export const vitePostCSSTreeShakeBuild = (options: VitePCTSB): Plugin => {
   return {
     name: "vitePostCSSTreeShakeBuild",
+
     buildEnd() {
       buildCSSLibrary(options.src, options.outDir, options.plugins);
     },
